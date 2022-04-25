@@ -5,6 +5,8 @@
 #define SCREENWIDTH 960
 #define SCREENHEIGHT 540
 
+// buttonfix
+
 //------------------------------------------------------------------------------------------
 // Types and Structures Definition
 //------------------------------------------------------------------------------------------
@@ -37,10 +39,11 @@ int transFromScreen = -1;
 int transToScreen = -1;
 int framesCounter = 0;
 
-Music music;
+Music titleMusic;
 GameScreen currentScreen;
 Sprite cursor;
-Texture2D background;
+Texture2D titleBackground;
+Texture2D buttonTexture;
 
 //------------------------------------------------------------------------------------------
 // Local Functions Declaration
@@ -80,13 +83,14 @@ int main()
       .rect = {0.0f, 32.0f, 32.0f, 32.0f},
     };
 
-    music = LoadMusicStream("assets/Kingdom_OST_Rest.mp3");
-    background = LoadTexture("assets/8-bit-pixel-art-city.png");
+    titleMusic = LoadMusicStream("assets/Kingdom_OST_Rest.mp3");
+    titleBackground = LoadTexture("assets/8-bit-pixel-art-city.png");
+    buttonTexture = LoadTexture("assets/button.png");
 
     // Allocate buffer for the delay effect
     delayBuffer = (float *)RL_CALLOC(48000*5, sizeof(float));   // 1 second delay (device sampleRate*channels)
 
-    PlayMusicStream(music);
+    PlayMusicStream(titleMusic);
     SetTargetFPS(60);               // Set desired framerate (frames-per-second)
     HideCursor();
 
@@ -102,13 +106,13 @@ int main()
     //--------------------------------------------------------------------------------------
 
     // TODO: Unload all loaded data (textures, fonts, audio) here!
-    UnloadMusicStream(music);   // Unload music stream buffers from RAM
+    UnloadMusicStream(titleMusic);   // Unload music stream buffers from RAM
 
     CloseAudioDevice();         // Close audio device (music streaming is automatically stopped)
 
-    UnloadTexture(background);
+    UnloadTexture(titleBackground);
     UnloadTexture(cursor.texture);
-    UnloadTexture(button);
+    UnloadTexture(buttonTexture);
 
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
@@ -156,7 +160,7 @@ void UpdateTransition(void)
 
 void UpdateDrawFrame() {
         // Update music buffer with new stream data
-        UpdateMusicStream(music);
+        UpdateMusicStream(titleMusic);
 
         // Update and fetch cursor data
         cursor.position = (Vector2){ .x = GetMousePosition().x, .y = GetMousePosition().y };
@@ -233,11 +237,11 @@ void UpdateDrawFrame() {
                 {
                     // TODO: Draw TITLE screen here!
                     Button button = (Button) {
-                        .texture = LoadTexture("assets/button.png"),
+                        .texture = buttonTexture,
                         .position = (Vector2){100, 100},
                         .text = "OPTIONS",
                     };
-                    DrawTexture(background, screenWidth/2 - background.width/2, screenHeight/2 - background.height/2, WHITE);
+                    DrawTexture(titleBackground, screenWidth/2 - titleBackground.width/2, screenHeight/2 - titleBackground.height/2, WHITE);
                     DrawText("TITLE SCREEN", 20, 20, 50, WHITE);
                     DrawTexture(button.texture, screenWidth/3, screenHeight/3, WHITE);
 
