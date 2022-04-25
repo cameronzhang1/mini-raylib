@@ -17,6 +17,12 @@ typedef struct Sprite {
     Vector2 position;
 } Sprite;
 
+typedef struct Button {
+    Texture2D texture;
+    Vector2 position;
+    char *text;
+} Button;
+
 //------------------------------------------------------------------------------------------
 // Global Variables
 //------------------------------------------------------------------------------------------
@@ -34,7 +40,7 @@ int framesCounter = 0;
 Music music;
 GameScreen currentScreen;
 Sprite cursor;
-Texture2D background; 
+Texture2D background;
 
 //------------------------------------------------------------------------------------------
 // Local Functions Declaration
@@ -60,6 +66,7 @@ int main()
     //--------------------------------------------------------------------------------------
     // Initialization
     //--------------------------------------------------------------------------------------
+    
     InitWindow(SCREENWIDTH, SCREENHEIGHT, "game_client");
 	SetWindowState(FLAG_WINDOW_RESIZABLE);
     InitAudioDevice();
@@ -101,6 +108,7 @@ int main()
 
     UnloadTexture(background);
     UnloadTexture(cursor.texture);
+    UnloadTexture(button);
 
     CloseWindow();        // Close window and OpenGL context
     //--------------------------------------------------------------------------------------
@@ -224,9 +232,15 @@ void UpdateDrawFrame() {
                 case TITLE:
                 {
                     // TODO: Draw TITLE screen here!
+                    Button button = (Button) {
+                        .texture = LoadTexture("assets/button.png"),
+                        .position = (Vector2){100, 100},
+                        .text = "OPTIONS",
+                    };
                     DrawTexture(background, screenWidth/2 - background.width/2, screenHeight/2 - background.height/2, WHITE);
                     DrawText("TITLE SCREEN", 20, 20, 50, WHITE);
-                    
+                    DrawTexture(button.texture, screenWidth/3, screenHeight/3, WHITE);
+
                 } break;
                 case GAMEPLAY:
                 {
