@@ -15,14 +15,11 @@ typedef struct Sprite {
     Texture2D texture;
     Rectangle rect;
     Vector2 position;
-    int state;
 } Sprite;
 
 //------------------------------------------------------------------------------------------
 // Global Variables
 //------------------------------------------------------------------------------------------
-
-
 
 static float *delayBuffer = NULL;
 
@@ -63,9 +60,11 @@ int main()
     //--------------------------------------------------------------------------------------
     // Initialization
     //--------------------------------------------------------------------------------------
-    InitWindow(SCREENWIDTH, SCREENHEIGHT, "screenManager");
+    InitWindow(SCREENWIDTH, SCREENHEIGHT, "game_client");
 	SetWindowState(FLAG_WINDOW_RESIZABLE);
     InitAudioDevice();
+    
+    SetExitKey(0);
 
     currentScreen = LOGO;
     cursor = (Sprite) {
@@ -73,8 +72,6 @@ int main()
       .position = {0.0f, 0.0f},
       .rect = {0.0f, 32.0f, 32.0f, 32.0f},
     };
-
-    // TODO: Initialize all required variables and load all required data here!
 
     music = LoadMusicStream("assets/Kingdom_OST_Rest.mp3");
     background = LoadTexture("assets/8-bit-pixel-art-city.png");
