@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define SCREENWIDTH 960
+#define SCREENHEIGHT 540
+
 //------------------------------------------------------------------------------------------
 // Types and Structures Definition
 //------------------------------------------------------------------------------------------
@@ -19,8 +22,7 @@ typedef struct Sprite {
 // Global Variables
 //------------------------------------------------------------------------------------------
 
-const int screenWidth = 1920;
-const int screenHeight = 1080;
+
 
 static float *delayBuffer = NULL;
 
@@ -61,7 +63,8 @@ int main()
     //--------------------------------------------------------------------------------------
     // Initialization
     //--------------------------------------------------------------------------------------
-    InitWindow(screenWidth, screenHeight, "screenManager");
+    InitWindow(SCREENWIDTH, SCREENHEIGHT, "screenManager");
+	SetWindowState(FLAG_WINDOW_RESIZABLE);
     InitAudioDevice();
 
     currentScreen = LOGO;
@@ -86,7 +89,7 @@ int main()
     //--------------------------------------------------------------------------------------
     // Main game loop
     //--------------------------------------------------------------------------------------
-    while (!WindowShouldClose())    // Detect window close button or ESC key
+    while (!WindowShouldClose())    // Detect window close button (Without ESC key!)
     {
         UpdateDrawFrame();
     }
@@ -206,6 +209,10 @@ void UpdateDrawFrame() {
         //----------------------------------------------------------------------------------
         // Draw
         //----------------------------------------------------------------------------------
+		// Init current screen width/height vars once per frame:
+		int screenWidth = GetScreenWidth();
+		int screenHeight = GetScreenHeight();
+		
         BeginDrawing();
             ClearBackground(RAYWHITE);
             switch(currentScreen)
